@@ -43,17 +43,17 @@ const PhotoCard = ({ photo }: PhotoCardProps) => {
   };
 
   return (
-    <div className="group bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/20 hover:border-white/40 transition-all duration-300 hover:transform hover:scale-105">
+    <div className="group bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:border-red-400/30 transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-red-500/10">
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden">
         {!imageLoaded && !imageError && (
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 animate-pulse flex items-center justify-center">
-            <div className="text-gray-400">Loading...</div>
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black animate-pulse flex items-center justify-center">
+            <div className="text-gray-500">Loading...</div>
           </div>
         )}
         
         {imageError ? (
-          <div className="absolute inset-0 bg-gradient-to-br from-red-900/50 to-orange-900/50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-gradient-to-br from-red-900/30 to-orange-900/30 flex items-center justify-center">
             <div className="text-center text-white">
               <Camera className="mx-auto mb-2 w-8 h-8" />
               <div className="text-sm">Image unavailable</div>
@@ -72,7 +72,7 @@ const PhotoCard = ({ photo }: PhotoCardProps) => {
         )}
         
         {/* Overlay with photo ID */}
-        <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1 text-white text-xs font-mono">
+        <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1 text-white text-xs font-mono border border-white/20">
           #{photo.id}
         </div>
       </div>
