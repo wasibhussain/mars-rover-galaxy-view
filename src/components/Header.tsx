@@ -1,13 +1,38 @@
 
 import { useState } from 'react';
-import { Rocket, Camera, Calendar, Globe } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { Rocket, Camera, Calendar, Globe, Star } from 'lucide-react';
 
 interface HeaderProps {
   onCameraFilter: (camera: string | null) => void;
   currentCamera: string | null;
 }
 
+interface APODData {
+  title: string;
+  explanation: string;
+  url: string;
+  hdurl?: string;
+  media_type: string;
+  date: string;
+}
+
+const fetchAPOD = async (): Promise<APODData> => {
+  const response = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY');
+  if (!response.ok) {
+    throw new Error('Failed to fetch APOD');
+  }
+  return response.json();
+};
+
 const Header = ({ onCameraFilter, currentCamera }: HeaderProps) => {
+  const [showAPOD, setShowAPOD] = useState(false);
+
+  const { data: apodData, isLoading: apodLoading } = useQuery({
+    queryKey: ['apod'],
+    queryFn: fetchAPOD,
+  });
+
   const cameras = [
     { id: null, name: 'All Cameras', icon: Globe },
     { id: 'fhaz', name: 'Front Hazard', icon: Camera },
@@ -91,6 +116,64 @@ const Header = ({ onCameraFilter, currentCamera }: HeaderProps) => {
             borderStyle: 'dashed',
           }}
         ></div>
+      </div>
+
+      {/* APOD Section */}
+      <div className="bg-black/30 backdrop-blur-sm border-b border-white/10">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-3">
+              <Star className="w-6 h-6 text-yellow-400" />
+              <div>
+                <h3 className="text-lg font-semibold text-white">Astronomy Picture of the Day</h3>
+                <p className="text-gray-400 text-sm">Powered by NASA APOD API</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowAPOD(!showAPOD)}
+              className="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 px-4 py-2 rounded-full border border-blue-400/30 transition-all duration-300"
+            >
+              {showAPOD ? 'Hide APOD' : 'Show APOD'}
+            </button>
+          </div>
+
+          {showAPOD && (
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 mb-4">
+              {apodLoading ? (
+                <div className="text-center text-white">Loading astronomy picture...</div>
+              ) : apodData ? (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div>
+                    {apodData.media_type === 'image' ? (
+                      <img 
+                        src={apodData.url} 
+                        alt={apodData.title}
+                        className="w-full h-64 object-cover rounded-lg"
+                      />
+                    ) : (
+                      <div className="w-full h-64 bg-gray-800 rounded-lg flex items-center justify-center">
+                        <p className="text-white">Video content - visit NASA APOD</p>
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-3">{apodData.title}</h4>
+                    <p className="text-gray-300 text-sm mb-3">{apodData.date}</p>
+                    <p className="text-gray-300 leading-relaxed text-sm">
+                      {apodData.explanation.substring(0, 300)}...
+                    </p>
+                    <div className="flex items-center space-x-4 mt-4">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                      <span className="text-blue-400 text-sm">NASA Astronomy Picture</span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center text-red-400">Failed to load astronomy picture</div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Navigation */}
