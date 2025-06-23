@@ -72,7 +72,7 @@ const Footer = () => {
         <div className="mt-8 pt-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row items-center justify-between text-gray-400 text-sm">
             <div className="mb-4 md:mb-0">
-              <p>&copy; 2024 RedPlanet Explorer. Powered by NASA Open Data API.</p>
+              <p>2025 RedPlanet Explorer. Powered by NASA Open Data API.</p>
             </div>
             <div className="flex items-center space-x-4">
               <a 
