@@ -1,9 +1,11 @@
-
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import PhotoCard from '@/components/PhotoCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import GalaxyBackground from '@/components/GalaxyBackground';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import HeroSection from '@/components/HeroSection';
 import {
   Pagination,
   PaginationContent,
@@ -41,10 +43,18 @@ interface ApiResponse {
   photos: Photo[];
 }
 
-const fetchMarsPhotos = async (): Promise<ApiResponse> => {
-  const response = await fetch(
-    'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=sSae3cM22CDW30j6lfXYMv4I13jn6uCVvx65JebR'
-  );
+const fetchMarsPhotos = async (camera: string | null = null, page: number = 1): Promise<ApiResponse> => {
+  let url = 'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=DEMO_KEY';
+  
+  if (camera) {
+    url += `&camera=${camera}`;
+  }
+  
+  if (page > 1) {
+    url += `&page=${page}`;
+  }
+  
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error('Failed to fetch Mars photos');
   }
@@ -55,10 +65,11 @@ const ITEMS_PER_PAGE = 18;
 
 const Index = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCamera, setSelectedCamera] = useState<string | null>(null);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['marsPhotos'],
-    queryFn: fetchMarsPhotos,
+    queryKey: ['marsPhotos', selectedCamera, currentPage],
+    queryFn: () => fetchMarsPhotos(selectedCamera, currentPage),
   });
 
   // Set page title and meta description for SEO
@@ -69,6 +80,12 @@ const Index = () => {
       metaDescription.setAttribute('content', 'Explore stunning Mars rover photos from NASA\'s Curiosity mission. Journey through the Red Planet with our immersive galaxy-themed photo gallery featuring real Martian landscapes.');
     }
   }, []);
+
+  // Reset page when camera filter changes
+  const handleCameraFilter = (camera: string | null) => {
+    setSelectedCamera(camera);
+    setCurrentPage(1);
+  };
 
   if (error) {
     return (
@@ -99,32 +116,11 @@ const Index = () => {
       <GalaxyBackground />
 
       <div className="relative z-10">
-        {/* Header */}
-        <header className="text-center py-16 px-4">
-          <h1 className="text-6xl md:text-8xl font-bold text-white mb-4 tracking-tight">
-            RedPlanet
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-orange-400 to-yellow-400">
-              Explorer
-            </span>
-          </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-2">
-            Journey through the cosmos and explore the Red Planet through NASA's Curiosity rover. 
-            Witness breathtaking Martian landscapes captured on Sol 1000 of this historic mission.
-          </p>
-          <p className="text-sm text-gray-400 max-w-2xl mx-auto">
-            Real NASA data • Live from Mars • Sol 1000 Mission Day
-          </p>
-          <div className="mt-8 flex justify-center items-center space-x-6 text-sm text-gray-400">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span>Live NASA API</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
-              <span>Mars Mission Active</span>
-            </div>
-          </div>
-        </header>
+        {/* Header with Navigation */}
+        <Header onCameraFilter={handleCameraFilter} currentCamera={selectedCamera} />
+
+        {/* Hero Section */}
+        <HeroSection />
 
         {/* Content */}
         <main className="container mx-auto px-4 pb-16">
@@ -138,7 +134,9 @@ const Index = () => {
                   <div className="text-2xl md:text-3xl font-bold text-white mb-2">
                     {totalPhotos}
                   </div>
-                  <div className="text-gray-300 text-sm">Total Photos</div>
+                  <div className="text-gray-300 text-sm">
+                    {selectedCamera ? `${selectedCamera.toUpperCase()} Photos` : 'Total Photos'}
+                  </div>
                 </div>
                 <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/10 hover:border-white/20 transition-colors">
                   <div className="text-2xl md:text-3xl font-bold text-white mb-2">{currentPhotos.length}</div>
@@ -156,10 +154,22 @@ const Index = () => {
                 </div>
               </div>
 
+              {/* Filter Info */}
+              {selectedCamera && (
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center bg-red-500/20 border border-red-400/30 rounded-full px-4 py-2 text-red-400">
+                    <span className="text-sm">
+                      Showing photos from {selectedCamera.toUpperCase()} camera
+                    </span>
+                  </div>
+                </div>
+              )}
+
               {/* Page Info */}
               <div className="text-center mb-8">
                 <p className="text-gray-400">
-                  Page {currentPage} of {totalPages} • Showing {currentPhotos.length} of {totalPhotos} photos
+                  Page {currentPage} • Showing {currentPhotos.length} of {totalPhotos} photos
+                  {selectedCamera && ` from ${selectedCamera.toUpperCase()}`}
                 </p>
               </div>
 
@@ -249,6 +259,9 @@ const Index = () => {
             </>
           )}
         </main>
+
+        {/* Footer */}
+        <Footer />
       </div>
     </div>
   );
