@@ -1,12 +1,12 @@
 
 import { useState } from 'react';
-import { ArrowLeft, Rocket, Globe, Thermometer, Calendar, Zap, Users, Camera, Mountain, Wind } from 'lucide-react';
+import { ArrowLeft, Rocket, Globe, Thermometer, Calendar, Zap, Users, Camera, Mountain, Wind, Telescope, Satellite, Target, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import GalaxyBackground from '@/components/GalaxyBackground';
 import Footer from '@/components/Footer';
 
 const MarsInfo = () => {
-  const [activeTab, setActiveTab] = useState('facts');
+  const [activeTab, setActiveTab] = useState('mars');
 
   const marsStats = [
     { icon: Globe, label: 'Distance from Sun', value: '227.9 million km', color: 'text-red-400' },
@@ -17,67 +17,115 @@ const MarsInfo = () => {
     { icon: Wind, label: 'Gravity', value: '38% of Earth', color: 'text-yellow-400' },
   ];
 
-  const missions = [
+  const planets = [
     {
-      name: 'Curiosity Rover',
-      year: '2012-Present',
-      status: 'Active',
-      description: 'Meet the nuclear-powered marvel that has been our eyes and hands on Mars for over a decade! Curiosity is not just another robot - it\'s a mobile laboratory the size of a car, equipped with 17 cameras and a suite of scientific instruments that would make any Earth-based lab jealous. This incredible machine has traveled over 28 kilometers across the Martian landscape, drilling into rocks, analyzing soil samples, and even taking selfies that have captivated millions of people back on Earth. What makes Curiosity truly special is its ability to operate autonomously, making critical decisions about where to go and what to investigate while being 14 minutes away from Earth at light speed. Every day, it sends back breathtaking images and groundbreaking scientific data that continue to rewrite our understanding of Mars and its potential to have harbored life.',
-      achievements: ['Confirmed ancient water activity', 'Detected methane in atmosphere', 'Found organic compounds', 'Discovered seasonal methane cycles', 'Identified ancient habitable environments', 'Analyzed Martian weather patterns']
+      name: 'Venus',
+      subtitle: 'Earth\'s Hellish Twin',
+      description: 'Venus is the hottest planet in our solar system despite not being closest to the Sun! With surface temperatures reaching 900°F (475°C) - hot enough to melt lead - Venus showcases the extreme greenhouse effect. Its thick atmosphere of carbon dioxide traps heat so efficiently that it\'s hotter than Mercury. The planet rotates backwards compared to most planets, and a day on Venus is longer than its year! Recent discoveries include possible signs of phosphine in its atmosphere, which could indicate microbial life floating in the cooler cloud layers. NASA\'s upcoming VERITAS and DAVINCI missions will revolutionize our understanding of this mysterious world.',
+      stats: ['Surface temp: 900°F', 'Pressure: 90x Earth', 'Day: 243 Earth days', 'Year: 225 Earth days'],
+      color: 'text-yellow-400'
     },
+    {
+      name: 'Jupiter',
+      subtitle: 'The Solar System\'s Giant Guardian',
+      description: 'Jupiter is a colossal gas giant that acts as our solar system\'s vacuum cleaner, protecting Earth by capturing asteroids and comets with its immense gravity! This massive planet has over 80 moons, including the four Galilean moons that are worlds unto themselves. Europa hides a subsurface ocean that may contain twice as much water as all Earth\'s oceans combined! Io is the most volcanically active body in the solar system, while Ganymede is larger than Mercury. Jupiter\'s Great Red Spot is a storm larger than Earth that has been raging for centuries. The Juno mission has revealed that Jupiter\'s core is more complex than expected, with a "fuzzy" or dilute core rather than a solid one.',
+      stats: ['Mass: 2.5x all other planets', 'Moons: 80+', 'Day: 10 hours', 'Great Red Spot: 350+ years old'],
+      color: 'text-orange-400'
+    },
+    {
+      name: 'Saturn',
+      subtitle: 'The Jewel of the Solar System',
+      description: 'Saturn\'s magnificent ring system makes it the most visually stunning planet in our solar system! These rings are made of countless ice particles ranging from tiny grains to house-sized chunks, all orbiting in perfect harmony. Saturn is so light it would float in water if you could find an ocean big enough! Its moon Titan has lakes of liquid methane and ethane, making it the only other world in our solar system with stable bodies of surface liquid. Enceladus shoots geysers of water ice from its south pole, suggesting a subsurface ocean that might harbor life. The Cassini mission revolutionized our understanding of Saturn, revealing the hexagonal storm at its north pole and the complex dynamics of its ring system.',
+      stats: ['Density: 0.69 g/cm³', 'Rings: Thousands', 'Moons: 80+', 'Hexagonal storm at north pole'],
+      color: 'text-amber-400'
+    }
+  ];
+
+  const blackHoles = [
+    {
+      title: 'Sagittarius A* - Our Galaxy\'s Heart',
+      description: 'At the center of our Milky Way galaxy lurks a supermassive black hole called Sagittarius A* (Sgr A*), containing 4 million times the mass of our Sun! In 2022, the Event Horizon Telescope captured the first direct image of this cosmic monster, showing the glowing ring of superheated matter spiraling into oblivion. Stars near Sgr A* orbit at incredible speeds - some complete an orbit in just 16 years, reaching 7,650 kilometers per second! These observations proved Einstein\'s theory of general relativity in the most extreme gravitational environment possible. The black hole occasionally "feeds" on nearby material, causing dramatic flares visible to our telescopes.',
+      discoveries: ['First image captured (2022)', 'Confirms Einstein\'s relativity', 'Stars orbit in 16 years', 'Mass: 4 million suns']
+    },
+    {
+      title: 'M87* - The Photography Pioneer',
+      description: 'M87* made history as the first black hole ever photographed by humanity! Located 55 million light-years away in the galaxy M87, this supermassive black hole contains 6.5 billion solar masses and powers a jet of particles that extends 5,000 light-years into space. The iconic 2019 image showed the "shadow" of the black hole against the bright accretion disk, confirming decades of theoretical predictions. The jet from M87* is so powerful it can be seen across the electromagnetic spectrum, from radio waves to gamma rays. This cosmic lighthouse helps us understand how black holes can influence entire galaxies.',
+      discoveries: ['First black hole photo (2019)', 'Mass: 6.5 billion suns', '5,000 light-year jet', 'Confirms theoretical models']
+    }
+  ];
+
+  const ongoingMissions = [
+    {
+      name: 'James Webb Space Telescope',
+      year: '2021-Present',
+      description: 'The most powerful space telescope ever built is revolutionizing our understanding of the universe! JWST peers deeper into space and further back in time than ever before, capturing light from the first galaxies that formed after the Big Bang. It has already discovered galaxies that are larger and more mature than expected for their age, forcing astronomers to revise theories about early cosmic evolution. The telescope\'s infrared vision allows it to see through cosmic dust, revealing star formation in unprecedented detail and analyzing the atmospheres of exoplanets for signs of water vapor and other potentially life-supporting molecules.',
+      achievements: ['Deepest space images ever', 'First galaxies after Big Bang', 'Exoplanet atmosphere analysis', 'Star formation through dust clouds']
+    },
+    {
+      name: 'Artemis Program',
+      year: '2019-2030s',
+      description: 'NASA\'s Artemis program aims to return humans to the Moon and establish a sustainable lunar presence, serving as a stepping stone to Mars! Artemis I successfully tested the Orion spacecraft in 2022, while Artemis II will carry astronauts around the Moon. The program plans to land the first woman and the first person of color on the lunar surface, establish a lunar base camp, and build the Gateway space station in lunar orbit. This ambitious program involves international partnerships and commercial companies, representing humanity\'s next giant leap in space exploration.',
+      achievements: ['Artemis I success (2022)', 'International partnerships', 'Lunar Gateway station', 'Pathway to Mars missions']
+    },
+    {
+      name: 'Parker Solar Probe',
+      year: '2018-2025',
+      description: 'The Parker Solar Probe is humanity\'s first mission to "touch" the Sun, diving closer to our star than any spacecraft in history! Protected by a revolutionary heat shield, it endures temperatures of 2,500°F while traveling at speeds of up to 430,000 mph - making it the fastest human-made object ever. The probe has already made groundbreaking discoveries about solar wind, magnetic fields, and the Sun\'s corona. It has revealed that the solar wind doesn\'t flow smoothly but comes in powerful bursts, and discovered "switchbacks" - mysterious S-shaped kinks in the solar magnetic field.',
+      achievements: ['Closest approach to Sun', 'Fastest human-made object', 'Solar wind discoveries', 'Magnetic field mysteries solved']
+    }
+  ];
+
+  const futureDiscoveries = [
+    {
+      title: 'Europa Clipper Mission (2024)',
+      description: 'This groundbreaking mission will explore Jupiter\'s moon Europa, which harbors a subsurface ocean containing twice as much water as all Earth\'s oceans! Europa Clipper will perform nearly 50 flybys of Europa, using ice-penetrating radar to confirm the ocean\'s existence and study its depth, salinity, and interaction with the rocky seafloor. The mission will search for plumes of water vapor erupting from the surface and analyze their composition for organic compounds. If microbial life exists in Europa\'s hidden ocean, this mission could provide the first evidence of life beyond Earth!'
+    },
+    {
+      title: 'Nancy Grace Roman Space Telescope (2027)',
+      description: 'Often called the "Mother of Hubble," this next-generation space telescope will have a field of view 100 times larger than Hubble while maintaining the same image quality! The Roman telescope will conduct the largest survey of exoplanets ever attempted, potentially discovering thousands of new worlds including Earth-like planets in habitable zones. It will also investigate dark energy and dark matter - the mysterious components that make up 95% of our universe. The telescope could finally answer whether we are alone in the galaxy by detecting biosignatures in exoplanet atmospheres.'
+    },
+    {
+      title: 'Mars Sample Return (2030s)',
+      description: 'The holy grail of planetary science! This ambitious multi-mission campaign will bring Martian rocks and soil collected by the Perseverance rover back to Earth for detailed laboratory analysis. These samples could contain fossilized evidence of ancient Martian life, revolutionizing our understanding of biology in the universe. The mission involves unprecedented international cooperation and cutting-edge technology, including the first rocket launch from another planet\'s surface. Success would mark humanity\'s first round-trip journey to another planet and could rewrite the story of life in our solar system.'
+    },
+    {
+      title: 'Breakthrough Starshot (2030s-2040s)',
+      description: 'This visionary project aims to send tiny spacecraft to Proxima Centauri, our nearest stellar neighbor, using powerful laser propulsion! These gram-scale "StarChips" would travel at 20% the speed of light, reaching the closest potentially habitable exoplanet in just 20 years rather than tens of thousands. The project faces enormous technical challenges but could provide humanity\'s first close-up images of another star system and potentially discover signs of life on Proxima b. This mission represents the first step toward becoming an interstellar civilization.'
+    }
+  ];
+
+  const marsFacts = [
+    {
+      title: 'The Crimson Mystery',
+      description: 'Mars doesn\'t just look red - it IS red, and the reason is both beautiful and violent! Billions of years ago, iron-rich rocks on Mars reacted with oxygen and water to create iron oxide, literally painting an entire planet the color of rust. This cosmic rust storm created the mesmerizing crimson landscapes we see today. But here\'s the fascinating part: this rusty surface tells us that Mars once had a thick atmosphere and abundant water - conditions that could have supported life! Every grain of red dust is a tiny time capsule, preserving the story of a world that once might have been as blue and alive as Earth.',
+      icon: Globe
+    },
+    {
+      title: 'Rivers of Ancient Dreams',
+      description: 'Billions of years ago, Mars was a water world that might have rivaled Earth in its beauty and habitability! Orbital images reveal an intricate network of ancient riverbeds, deltas, and lake shores that paint a picture of a planet once flowing with liquid water. The Jezero Crater, where Perseverance now roams, was once a pristine lake fed by rivers carrying sediments and possibly even microbial life from across the Martian landscape. Scientists have found evidence of ancient tsunamis that swept across Martian oceans, leaving behind massive deposits of rocks and debris.',
+      icon: Wind
+    },
+    {
+      title: 'The Solar System\'s Skyscraper',
+      description: 'Forget Mount Everest - Mars is home to Olympus Mons, a volcano so massive it defies imagination! This colossal mountain stands 21 kilometers high and is so wide that its base could cover the entire state of Arizona. What makes this even more incredible is that Olympus Mons is a shield volcano, built up over millions of years by countless lava flows. The low gravity on Mars allowed it to grow to these impossible heights - on Earth, such a massive structure would collapse under its own weight!',
+      icon: Mountain
+    }
+  ];
+
+  const marsMissions = [
     {
       name: 'Perseverance Rover',
       year: '2021-Present',
       status: 'Active',
-      description: 'Perseverance represents humanity\'s boldest attempt yet to answer the ultimate question: "Are we alone?" This cutting-edge rover landed in Jezero Crater, an ancient river delta that scientists believe could hold the key to discovering past microbial life on Mars. But Perseverance isn\'t working alone - it brought along Ingenuity, a helicopter that made history by achieving powered flight on another planet! Together, they\'re not just exploring Mars; they\'re preparing for humanity\'s eventual arrival. Perseverance is actively collecting rock and soil samples in specially designed tubes that will be retrieved by future missions and brought back to Earth - making it the first step in an ambitious multi-mission campaign. The rover can produce oxygen from the Martian atmosphere, proving that future astronauts could literally breathe easier on the Red Planet. Every sol (Martian day), Perseverance pushes the boundaries of what\'s possible in space exploration.',
-      achievements: ['First helicopter flight on Mars (Ingenuity)', 'Oxygen production on Mars (MOXIE)', 'Sample collection for future return', 'Advanced autonomous navigation', 'Discovered organic molecules in igneous rock', 'Evidence of ancient microbial life']
+      description: 'Perseverance represents humanity\'s boldest attempt yet to answer the ultimate question: "Are we alone?" This cutting-edge rover landed in Jezero Crater, an ancient river delta that scientists believe could hold the key to discovering past microbial life on Mars. Perseverance is actively collecting rock and soil samples in specially designed tubes that will be retrieved by future missions and brought back to Earth. The rover can produce oxygen from the Martian atmosphere, proving that future astronauts could literally breathe easier on the Red Planet.',
+      achievements: ['First helicopter flight on Mars (Ingenuity)', 'Oxygen production on Mars', 'Sample collection for future return', 'Evidence of ancient microbial life']
     },
     {
-      name: 'Viking Program',
-      year: '1976-1982',
-      status: 'Historic',
-      description: 'The Viking missions were humanity\'s first successful attempt to land on Mars and truly see the Red Planet up close. Imagine the excitement and terror of NASA scientists in 1976 as they watched their billion-dollar spacecraft attempt to land on an alien world with no GPS, no real-time communication, and technology less powerful than a modern smartphone! The twin Viking landers and orbiters revolutionized our understanding of Mars, revealing a world of stunning beauty and complex geology. For the first time, humans could see Martian sunrises, dust devils dancing across ancient plains, and the intricate details of polar ice caps. The landers conducted the first experiments specifically designed to search for life on another planet - and while the results were inconclusive, they opened up entirely new fields of astrobiology. The Viking missions proved that Mars wasn\'t just a distant red dot in the sky, but a real world with weather, seasons, and a rich geological history that spans billions of years.',
-      achievements: ['First successful US landing on Mars', 'First detailed Mars surface images', 'Atmospheric composition analysis', 'First search for life experiments', 'Detailed geological mapping', 'Long-term weather monitoring']
-    },
-    {
-      name: 'Mars Reconnaissance Orbiter',
-      year: '2006-Present',
+      name: 'Curiosity Rover',
+      year: '2012-Present',
       status: 'Active',
-      description: 'High above the Martian surface, the Mars Reconnaissance Orbiter serves as our eye in the sky, capturing images so detailed you can see individual boulders and even the tracks left by our rovers below! This technological marvel has been orbiting Mars for nearly two decades, serving as both a scientific powerhouse and a crucial communication relay for surface missions. Its HiRISE camera can spot objects as small as a desk from 300 kilometers above the surface - imagine having Google Earth for Mars! The orbiter has discovered flowing water on present-day Mars, mapped underground ice deposits that could supply future human missions, and tracked massive dust storms that can engulf the entire planet. Perhaps most importantly, it serves as a scout for future landing sites, helping mission planners choose the safest and most scientifically interesting locations for rovers and eventually human explorers. Every image it takes brings us closer to understanding Mars as a dynamic, ever-changing world.',
-      achievements: ['High-resolution surface mapping', 'Discovery of seasonal water flows', 'Weather and climate monitoring', 'Underground ice detection', 'Communication relay for surface missions', 'Landing site reconnaissance']
-    }
-  ];
-
-  const facts = [
-    {
-      title: 'The Crimson Mystery',
-      description: 'Mars doesn\'t just look red - it IS red, and the reason is both beautiful and violent! Billions of years ago, iron-rich rocks on Mars reacted with oxygen and water to create iron oxide, literally painting an entire planet the color of rust. This cosmic rust storm created the mesmerizing crimson landscapes we see today. But here\'s the fascinating part: this rusty surface tells us that Mars once had a thick atmosphere and abundant water - conditions that could have supported life! Every grain of red dust is a tiny time capsule, preserving the story of a world that once might have been as blue and alive as Earth. When you look at Mars through a telescope, you\'re not just seeing a planet - you\'re witnessing the aftermath of an epic planetary transformation that took place over millions of years.',
-      icon: Globe
-    },
-    {
-      title: 'Dancing with Two Companions',
-      description: 'Mars has two tiny, potato-shaped moons that are absolutely nothing like our familiar, round Moon! Phobos and Deimos - named after the Greek gods of fear and panic - are likely captured asteroids that got trapped in Mars\' gravitational embrace millions of years ago. Phobos is so close to Mars that it orbits the planet three times every Martian day, rising in the west and setting in the east! Even more dramatically, Phobos is spiraling inward and will either crash into Mars or be torn apart into rings in about 50 million years. Imagine standing on Mars and watching a moon race across the sky, completing an entire orbit in just 7.5 hours! These quirky moons create eclipses too, but instead of the total solar eclipses we experience on Earth, Martian eclipses look more like a dark potato passing in front of the Sun.',
-      icon: Calendar
-    },
-    {
-      title: 'The Solar System\'s Skyscraper',
-      description: 'Forget Mount Everest - Mars is home to Olympus Mons, a volcano so massive it defies imagination! This colossal mountain stands 21 kilometers high (that\'s nearly three Mount Everests stacked on top of each other) and is so wide that its base could cover the entire state of Arizona. What makes this even more incredible is that Olympus Mons is a shield volcano, built up over millions of years by countless lava flows. The low gravity on Mars allowed it to grow to these impossible heights - on Earth, such a massive structure would collapse under its own weight! The summit caldera alone is 80 kilometers wide and could easily swallow several major cities. If you could somehow stand at the base of Olympus Mons, the peak would be beyond the horizon, hidden by the curve of the planet itself. It\'s not just the tallest mountain on Mars - it\'s the tallest known mountain in our entire solar system!',
-      icon: Mountain
-    },
-    {
-      title: 'Rivers of Ancient Dreams',
-      description: 'Billions of years ago, Mars was a water world that might have rivaled Earth in its beauty and habitability! Orbital images reveal an intricate network of ancient riverbeds, deltas, and lake shores that paint a picture of a planet once flowing with liquid water. The Jezero Crater, where Perseverance now roams, was once a pristine lake fed by rivers carrying sediments and possibly even microbial life from across the Martian landscape. Scientists have found evidence of ancient tsunamis that swept across Martian oceans, leaving behind massive deposits of rocks and debris. Some of these ancient water features are so well-preserved that we can literally follow the flow of rivers that dried up over 3 billion years ago! This isn\'t just geological history - it\'s the story of a planet that might have been teeming with life, making Mars our most promising target in the search for answers about whether life is common in the universe.',
-      icon: Wind
-    },
-    {
-      title: 'Frozen Treasure Chests',
-      description: 'Mars guards vast reserves of frozen water at its poles, creating ice caps that expand and contract with the seasons like a planetary breathing system! But this isn\'t just regular water ice - it\'s mixed with frozen carbon dioxide (dry ice) that sublimates directly from solid to gas, creating spectacular geysers and dark spider-like patterns visible from orbit. The northern ice cap alone contains enough water to cover the entire planet in a layer 35 meters deep! Recent discoveries have revealed that there\'s also substantial amounts of water ice buried just beneath the surface across much of Mars, potentially providing future human explorers with drinking water, oxygen for breathing, and hydrogen for rocket fuel. During Martian winter, temperatures drop so low that carbon dioxide from the atmosphere actually freezes out, temporarily thickening the ice caps and creating a dynamic, ever-changing polar landscape that looks like something from an alien fairy tale.',
-      icon: Thermometer
-    },
-    {
-      title: 'Planet-Swallowing Storms',
-      description: 'Mars experiences dust storms so massive and powerful they can engulf the entire planet for months, turning day into night and creating an alien apocalypse scenario that makes Earth\'s hurricanes look like gentle breezes! These global dust storms occur roughly every few years when Mars is closest to the Sun, and they can generate winds of up to 200 kilometers per hour while lifting billions of tons of fine dust into the thin Martian atmosphere. The dust particles are so fine they behave almost like smoke, and once a storm begins, it can feed on itself, growing larger and larger until it covers all 144 million square kilometers of the planet\'s surface! During the 2018 global dust storm, NASA lost contact with the Opportunity rover for months as its solar panels were completely blocked by dust. These storms are so powerful they can be seen from Earth through telescopes, temporarily obscuring our view of surface features and reminding us that Mars is still a dynamic, active world.',
-      icon: Zap
+      description: 'Meet the nuclear-powered marvel that has been our eyes and hands on Mars for over a decade! Curiosity is a mobile laboratory the size of a car, equipped with 17 cameras and scientific instruments. This incredible machine has traveled over 28 kilometers across the Martian landscape, drilling into rocks, analyzing soil samples, and making critical decisions autonomously while being 14 minutes away from Earth at light speed.',
+      achievements: ['Confirmed ancient water activity', 'Detected methane in atmosphere', 'Found organic compounds', 'Identified ancient habitable environments']
     }
   ];
 
@@ -98,8 +146,8 @@ const MarsInfo = () => {
                 <span className="text-lg font-semibold">Back to Gallery</span>
               </Link>
               <div className="flex items-center space-x-3">
-                <Rocket className="w-8 h-8 text-red-400" />
-                <h1 className="text-2xl md:text-3xl font-bold text-white">Mars Explorer</h1>
+                <Telescope className="w-8 h-8 text-blue-400" />
+                <h1 className="text-2xl md:text-3xl font-bold text-white">Space Explorer</h1>
               </div>
             </div>
           </div>
@@ -109,101 +157,226 @@ const MarsInfo = () => {
         <section className="text-center py-16 px-4">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-              Discover
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-orange-400 to-yellow-400">
-                Mars
+              Explore
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+                The Universe
               </span>
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-              Journey through the fascinating world of the Red Planet. Explore cutting-edge research, 
-              incredible discoveries, and the ongoing quest to understand our neighboring world that might 
-              hold the key to answering humanity's greatest question: Are we alone in the universe?
+              Journey through the cosmos and discover the wonders of space exploration. From Mars missions to black holes, 
+              from distant planets to cutting-edge research - explore humanity's greatest adventure into the unknown.
             </p>
           </div>
         </section>
 
         {/* Navigation Tabs */}
         <div className="container mx-auto px-4 mb-12">
-          <div className="flex justify-center space-x-4 mb-8">
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
             <button
-              onClick={() => setActiveTab('facts')}
+              onClick={() => setActiveTab('mars')}
               className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
-                activeTab === 'facts'
+                activeTab === 'mars'
                   ? 'bg-red-500/30 text-red-400 border border-red-400/50'
                   : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
               }`}
             >
-              Mars Facts
+              Mars Research
+            </button>
+            <button
+              onClick={() => setActiveTab('planets')}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                activeTab === 'planets'
+                  ? 'bg-blue-500/30 text-blue-400 border border-blue-400/50'
+                  : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
+              }`}
+            >
+              Other Planets
+            </button>
+            <button
+              onClick={() => setActiveTab('blackholes')}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                activeTab === 'blackholes'
+                  ? 'bg-purple-500/30 text-purple-400 border border-purple-400/50'
+                  : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
+              }`}
+            >
+              Black Holes
             </button>
             <button
               onClick={() => setActiveTab('missions')}
               className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
                 activeTab === 'missions'
-                  ? 'bg-red-500/30 text-red-400 border border-red-400/50'
+                  ? 'bg-green-500/30 text-green-400 border border-green-400/50'
                   : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
               }`}
             >
-              Missions & Research
+              Current Missions
             </button>
             <button
-              onClick={() => setActiveTab('stats')}
+              onClick={() => setActiveTab('future')}
               className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
-                activeTab === 'stats'
-                  ? 'bg-red-500/30 text-red-400 border border-red-400/50'
+                activeTab === 'future'
+                  ? 'bg-yellow-500/30 text-yellow-400 border border-yellow-400/50'
                   : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
               }`}
             >
-              Planet Stats
+              Future Discoveries
             </button>
           </div>
         </div>
 
         {/* Content Sections */}
         <main className="container mx-auto px-4 pb-16">
-          {activeTab === 'facts' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {facts.map((fact, index) => {
-                const IconComponent = fact.icon;
-                return (
-                  <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-red-400/30 transition-all duration-300">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <IconComponent className="w-8 h-8 text-red-400" />
-                      <h3 className="text-xl font-bold text-white">{fact.title}</h3>
+          {activeTab === 'mars' && (
+            <div className="space-y-12">
+              {/* Mars Facts */}
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-8 text-center">Mars Facts</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {marsFacts.map((fact, index) => {
+                    const IconComponent = fact.icon;
+                    return (
+                      <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-red-400/30 transition-all duration-300">
+                        <div className="flex items-center space-x-3 mb-4">
+                          <IconComponent className="w-8 h-8 text-red-400" />
+                          <h3 className="text-xl font-bold text-white">{fact.title}</h3>
+                        </div>
+                        <p className="text-gray-300 leading-relaxed text-sm">{fact.description}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Mars Missions */}
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-8 text-center">Mars Missions</h2>
+                <div className="space-y-8">
+                  {marsMissions.map((mission, index) => (
+                    <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-red-400/30 transition-all duration-300">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                        <div>
+                          <h3 className="text-2xl font-bold text-white mb-2">{mission.name}</h3>
+                          <div className="flex items-center space-x-4">
+                            <span className="text-gray-400">{mission.year}</span>
+                            <span className="px-3 py-1 rounded-full text-sm font-medium bg-green-500/20 text-green-400 border border-green-400/30">
+                              {mission.status}
+                            </span>
+                          </div>
+                        </div>
+                        <Rocket className="w-12 h-12 text-red-400 mt-4 md:mt-0" />
+                      </div>
+                      <p className="text-gray-300 mb-6 leading-relaxed text-sm">{mission.description}</p>
+                      <div>
+                        <h4 className="text-lg font-semibold text-white mb-3">Key Achievements:</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {mission.achievements.map((achievement, i) => (
+                            <div key={i} className="flex items-center space-x-3">
+                              <div className="w-2 h-2 bg-red-400 rounded-full flex-shrink-0"></div>
+                              <span className="text-gray-300 text-sm">{achievement}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-gray-300 leading-relaxed text-sm">{fact.description}</p>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mars Stats */}
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-8 text-center">Mars Statistics</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {marsStats.map((stat, index) => {
+                    const IconComponent = stat.icon;
+                    return (
+                      <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/10 hover:border-white/20 transition-all duration-300">
+                        <IconComponent className={`w-12 h-12 mx-auto mb-4 ${stat.color}`} />
+                        <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
+                        <div className="text-gray-300">{stat.label}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'planets' && (
+            <div className="space-y-8">
+              <h2 className="text-3xl font-bold text-white mb-8 text-center">Planetary Exploration</h2>
+              {planets.map((planet, index) => (
+                <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-blue-400/30 transition-all duration-300">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                    <div>
+                      <h3 className="text-3xl font-bold text-white mb-2">{planet.name}</h3>
+                      <p className={`text-xl font-medium ${planet.color} mb-4`}>{planet.subtitle}</p>
+                    </div>
+                    <Globe className={`w-16 h-16 ${planet.color} mt-4 md:mt-0`} />
                   </div>
-                );
-              })}
+                  <p className="text-gray-300 mb-6 leading-relaxed">{planet.description}</p>
+                  <div>
+                    <h4 className="text-lg font-semibold text-white mb-3">Quick Facts:</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {planet.stats.map((stat, i) => (
+                        <div key={i} className="bg-white/5 rounded-lg p-3 text-center">
+                          <span className="text-gray-300 text-sm">{stat}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {activeTab === 'blackholes' && (
+            <div className="space-y-8">
+              <h2 className="text-3xl font-bold text-white mb-8 text-center">Black Hole Discoveries</h2>
+              {blackHoles.map((blackHole, index) => (
+                <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-purple-400/30 transition-all duration-300">
+                  <div className="flex items-center space-x-4 mb-6">
+                    <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-black rounded-full flex items-center justify-center">
+                      <div className="w-8 h-8 bg-black rounded-full"></div>
+                    </div>
+                    <h3 className="text-2xl font-bold text-white">{blackHole.title}</h3>
+                  </div>
+                  <p className="text-gray-300 mb-6 leading-relaxed">{blackHole.description}</p>
+                  <div>
+                    <h4 className="text-lg font-semibold text-white mb-3">Key Discoveries:</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {blackHole.discoveries.map((discovery, i) => (
+                        <div key={i} className="flex items-center space-x-3">
+                          <div className="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0"></div>
+                          <span className="text-gray-300 text-sm">{discovery}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
           {activeTab === 'missions' && (
             <div className="space-y-8">
-              {missions.map((mission, index) => (
-                <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-red-400/30 transition-all duration-300">
+              <h2 className="text-3xl font-bold text-white mb-8 text-center">Ongoing NASA Missions</h2>
+              {ongoingMissions.map((mission, index) => (
+                <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-green-400/30 transition-all duration-300">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
                     <div>
                       <h3 className="text-2xl font-bold text-white mb-2">{mission.name}</h3>
-                      <div className="flex items-center space-x-4">
-                        <span className="text-gray-400">{mission.year}</span>
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          mission.status === 'Active' 
-                            ? 'bg-green-500/20 text-green-400 border border-green-400/30'
-                            : 'bg-blue-500/20 text-blue-400 border border-blue-400/30'
-                        }`}>
-                          {mission.status}
-                        </span>
-                      </div>
+                      <span className="text-gray-400">{mission.year}</span>
                     </div>
-                    <Rocket className="w-12 h-12 text-red-400 mt-4 md:mt-0" />
+                    <Satellite className="w-12 h-12 text-green-400 mt-4 md:mt-0" />
                   </div>
-                  <p className="text-gray-300 mb-6 leading-relaxed text-sm">{mission.description}</p>
+                  <p className="text-gray-300 mb-6 leading-relaxed">{mission.description}</p>
                   <div>
-                    <h4 className="text-lg font-semibold text-white mb-3">Key Achievements:</h4>
+                    <h4 className="text-lg font-semibold text-white mb-3">Major Achievements:</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       {mission.achievements.map((achievement, i) => (
                         <div key={i} className="flex items-center space-x-3">
-                          <div className="w-2 h-2 bg-red-400 rounded-full flex-shrink-0"></div>
+                          <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
                           <span className="text-gray-300 text-sm">{achievement}</span>
                         </div>
                       ))}
@@ -214,18 +387,18 @@ const MarsInfo = () => {
             </div>
           )}
 
-          {activeTab === 'stats' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {marsStats.map((stat, index) => {
-                const IconComponent = stat.icon;
-                return (
-                  <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/10 hover:border-white/20 transition-all duration-300">
-                    <IconComponent className={`w-12 h-12 mx-auto mb-4 ${stat.color}`} />
-                    <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
-                    <div className="text-gray-300">{stat.label}</div>
+          {activeTab === 'future' && (
+            <div className="space-y-8">
+              <h2 className="text-3xl font-bold text-white mb-8 text-center">Future Space Discoveries</h2>
+              {futureDiscoveries.map((discovery, index) => (
+                <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-yellow-400/30 transition-all duration-300">
+                  <div className="flex items-center space-x-4 mb-6">
+                    <Target className="w-12 h-12 text-yellow-400" />
+                    <h3 className="text-2xl font-bold text-white">{discovery.title}</h3>
                   </div>
-                );
-              })}
+                  <p className="text-gray-300 leading-relaxed">{discovery.description}</p>
+                </div>
+              ))}
             </div>
           )}
         </main>
