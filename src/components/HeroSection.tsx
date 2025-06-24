@@ -1,5 +1,6 @@
 
-import { Rocket, Camera, Globe, Zap } from 'lucide-react';
+import { Rocket, Camera, Globe, Zap, BookOpen } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
@@ -12,7 +13,7 @@ const HeroSection = () => {
           </span>
         </h1>
         
-        <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-6">
+        <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
           Journey through the cosmos and explore the Red Planet through NASA's Curiosity rover. 
           Witness breathtaking Martian landscapes captured on Sol 1000 of this historic mission.
         </p>
@@ -35,6 +36,24 @@ const HeroSection = () => {
             <div className="text-white font-semibold">Multiple Cameras</div>
             <div className="text-gray-400 text-sm">Different perspectives</div>
           </div>
+        </div>
+
+        {/* Call to Action */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+          <Link 
+            to="/mars-info" 
+            className="group bg-red-500/20 hover:bg-red-500/30 text-red-400 px-8 py-3 rounded-full border border-red-400/30 transition-all duration-300 hover:scale-105 flex items-center space-x-2"
+          >
+            <BookOpen className="w-5 h-5" />
+            <span className="font-semibold">Discover Mars Facts</span>
+          </Link>
+          <button 
+            onClick={() => document.querySelector('main')?.scrollIntoView({ behavior: 'smooth' })}
+            className="group bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 px-8 py-3 rounded-full border border-blue-400/30 transition-all duration-300 hover:scale-105 flex items-center space-x-2"
+          >
+            <Camera className="w-5 h-5" />
+            <span className="font-semibold">View Photo Gallery</span>
+          </button>
         </div>
 
         <div className="flex justify-center items-center space-x-6 text-sm text-gray-400">
